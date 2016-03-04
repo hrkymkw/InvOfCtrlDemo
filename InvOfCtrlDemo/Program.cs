@@ -11,6 +11,15 @@ namespace InvOfCtrlDemo
     {
         static void Main(string[] args)
         {
+            //SimpleResolveDemo();
+            DependencyResolveDemo();
+
+            Console.WriteLine("\nDone!");
+            Console.ReadLine();
+        }
+
+        private static void SimpleResolveDemo()
+        {
             // setup up a new standard "container"
             var kernel = new Ninject.StandardKernel();
 
@@ -21,13 +30,25 @@ namespace InvOfCtrlDemo
 
             // work with your resolved service
             var names = service.GetMeSomeNames();
-            foreach(var name in names)
+            foreach (var name in names)
             {
                 Console.WriteLine($"My name is {name}");
             }
+        }
 
-            Console.WriteLine("Done!");
-            Console.ReadLine();
+        private static void DependencyResolveDemo()
+        {
+            // setup up a new standard "container"
+            var kernel = new Ninject.StandardKernel();
+
+            kernel.Bind<IEmployeeReportNameProvider>().To<SimpleEmployeeNameProvider>();
+            kernel.Bind<IEmployeeReportService>().To<EmployeeReportService>();
+
+            // calls for a server based on a registered type
+            var service = kernel.Get<IEmployeeReportService>();
+
+            // work with your resolved service
+            service.ReportEmployees();
         }
     }
 }
