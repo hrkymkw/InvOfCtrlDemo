@@ -12,9 +12,12 @@ namespace InvOfCtrlDemo
         static void Main(string[] args)
         {
             //SimpleResolveDemo();
-            DependencyResolveDemo();
+            //DependencyResolveDemo();
 
-            Console.WriteLine("\nDone!");
+            //Console.WriteLine("\nDone!");
+            //Console.ReadLine();
+
+            AccountPayableSite();
             Console.ReadLine();
         }
 
@@ -49,6 +52,23 @@ namespace InvOfCtrlDemo
 
             // work with your resolved service
             service.ReportEmployees();
+        }
+
+        private static void AccountPayableSite()
+        {
+            // setup up a new standard "container"
+            var kernel = new Ninject.StandardKernel();
+
+            //kernel.Bind<IClient>().To<Google>();
+            kernel.Bind<IClient>().To<Apple>();
+            kernel.Bind<IMainPage>().To<APMainPage>();
+
+            // calls for a server based on a registered type
+            var service = kernel.Get<IMainPage>();
+
+            service.Header1();
+            service.Header2();
+            service.Body();
         }
     }
 }
